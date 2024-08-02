@@ -1,10 +1,17 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./chat.css";
 import EmojiPicker from "emoji-picker-react";
 
 export const Chat = () => {
   const [open, setOpen] = useState(false);
   const [text, setText] = useState("");
+
+  const endRef = useRef(null);
+
+  useEffect(() => {
+    // bu sayede endref yazılı olan yere ekran otomatik olarak kaydırılır
+    endRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [text]);
 
   const handleEmoji = (e) => {
     console.log(e);
@@ -86,6 +93,7 @@ export const Chat = () => {
             <span>1 min ago</span>
           </div>
         </div>
+        <div ref={endRef}></div>
       </div>
       <div className="bottom">
         <div className="icons">

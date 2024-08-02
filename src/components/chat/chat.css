@@ -139,6 +139,7 @@
 
     .emoji {
       position: relative;
+
       .pickerContainer {
         position: absolute;
         bottom: 60px;
