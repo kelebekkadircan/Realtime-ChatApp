@@ -1,6 +1,14 @@
 import { useState } from "react";
 import "./login.css";
 import { toast } from "react-toastify";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { auth, db } from "../../lib/firebase";
+import { doc, setDoc } from "firebase/firestore";
+import upload from "../../lib/upload";
+
 const Login = () => {
   const [loading, setLoading] = useState(false);
   const [avatar, setAvatar] = useState({
@@ -8,14 +16,52 @@ const Login = () => {
     url: "",
   });
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    toast.success("Login successfully");
+    setLoading(true);
+    const formdata = new FormData(e.target);
+    const { email, password } = Object.fromEntries(formdata);
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    console.log("Register");
+    setLoading(true);
+    const formData = new FormData(e.target);
+
+    const { username, email, password } = Object.fromEntries(formData);
+
+    try {
+      const res = await createUserWithEmailAndPassword(auth, email, password);
+
+      const imgUrl = await upload(avatar.file);
+
+      await setDoc(doc(db, "users", res.user.uid), {
+        username: username,
+        email,
+        avatar: imgUrl,
+        id: res.user.uid,
+        blocked: [],
+      });
+
+      await setDoc(doc(db, "userchats", res.user.uid), {
+        chats: [],
+      });
+
+      toast.success("Account created! You can login now!");
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleAvatar = (e) => {

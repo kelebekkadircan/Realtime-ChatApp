@@ -1,3 +1,4 @@
+import { auth } from "../../lib/firebase";
 import "./detail.css";
 
 export const Detail = () => {
@@ -88,9 +89,14 @@ export const Detail = () => {
              ? "User blocked"
              : "Block User"}
          </button>
-         <button className="logout" onClick={handleLogout}>
-           Logout
-         </button> */}
+        <button className="logout" onClick={handleLogout}>
+        Logout
+        </button>
+         */}
+
+        <button className="logout" onClick={() => auth.signOut()}>
+          LOGOUT
+        </button>
       </div>
     </div>
   );

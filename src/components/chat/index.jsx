@@ -17,7 +17,7 @@ export const Chat = () => {
     console.log(e);
     setText((prev) => prev + e.emoji);
   };
-  console.log(text);
+  // console.log(text);
 
   return (
     <div className="chat">
