@@ -1,4 +1,4 @@
-import { Chat } from "./components/chat";
+import Chat from "./components/chat";
 import { List } from "./components/list";
 import { Detail } from "./components/detail";
 import Login from "./components/login/Login";
@@ -7,9 +7,11 @@ import { useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./lib/firebase";
 import { useUserStore } from "./lib/userStore";
+import { useChatStore } from "./lib/chatStore";
 
 const App = () => {
   const { currentUser, isLoading, fetchUserInfo } = useUserStore();
+  const { chatId } = useChatStore();
 
   useEffect(() => {
     const unSub = onAuthStateChanged(auth, (e) => {
@@ -21,7 +23,7 @@ const App = () => {
     };
   }, [fetchUserInfo]);
 
-  console.log(currentUser, isLoading);
+  // console.log(currentUser, isLoading);
 
   if (isLoading) return <div className="loading">Loading...</div>;
 
@@ -31,8 +33,8 @@ const App = () => {
         {currentUser ? (
           <>
             <List />
-            <Chat />
-            <Detail />
+            {chatId && <Chat />}
+            {chatId && <Detail />}
           </>
         ) : (
           <Login />

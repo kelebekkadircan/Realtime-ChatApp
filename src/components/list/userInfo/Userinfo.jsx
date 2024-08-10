@@ -11,7 +11,9 @@ const UserInfo = () => {
           src={currentUser?.avatar ? currentUser?.avatar : "/avatar.png"}
           alt=""
         />
-        <h2>{currentUser?.username ? currentUser?.username : "Kullanıcı"}</h2>
+        <h2 style={{ textTransform: "capitalize" }}>
+          {currentUser?.username ? currentUser?.username : "Kullanıcı"}
+        </h2>
       </div>
       <div className="icons">
         <img src="/more.png" alt="" />

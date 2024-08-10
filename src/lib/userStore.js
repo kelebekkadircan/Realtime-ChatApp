@@ -20,7 +20,7 @@ const useUserStore = create((set) => ({
         return set({ currentUser: null, isLoading: false });
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       return set({ currentUser: null, isLoading: false });
     }
   },
